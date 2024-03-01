@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { config } from 'dotenv';
@@ -11,13 +15,14 @@ import { JwtPayloadDto } from './dto/jwt-payload.dto';
 import { JwtTokensDto } from './dto/jwt-tokens.dto';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
-config(); 
-
+config();
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly jwtService: JwtService,
-    private readonly userService: UserService){}
+  constructor(
+    private readonly jwtService: JwtService,
+    private readonly userService: UserService,
+  ) {}
 
   private jwtSignToken(jwtPayload: JwtPayloadDto) {
     return {
@@ -28,9 +33,10 @@ export class AuthService {
     };
   }
 
-
-  async register(registerDto: RegisterDto, response: Response = null){
-    const existingUser: User = await this.userService.findByEmail(registerDto.email);
+  async register(registerDto: RegisterDto, response: Response = null) {
+    const existingUser: User = await this.userService.findByEmail(
+      registerDto.email,
+    );
     if (existingUser) {
       throw new BadRequestException('User with given email exists.');
     }
@@ -39,7 +45,7 @@ export class AuthService {
 
     const user: User = await this.userService.create(registerDto);
 
-    if(response){
+    if (response) {
       const authTokens: JwtTokensDto = this.jwtSignToken({
         id: user.id,
         email: user.email,
@@ -48,15 +54,12 @@ export class AuthService {
         httpOnly: true,
         maxAge: expirationConstants.accessExpirationInSecs * 1000,
         sameSite: 'none',
-        secure: true
+        secure: true,
       });
     }
     return user;
   }
-  async login(
-    response: Response,
-    loginDto: LoginDto
-  ){
+  async login(response: Response, loginDto: LoginDto) {
     const user: User = await this.userService.findByEmail(loginDto.email);
     if (!user) {
       throw new BadRequestException("User with given email doesn't exist.");
@@ -75,14 +78,13 @@ export class AuthService {
       httpOnly: true,
       maxAge: expirationConstants.accessExpirationInSecs * 1000,
       sameSite: 'none',
-      secure: true});
+      secure: true,
+    });
 
     return user;
   }
 
-  async logout(
-    response: Response,
-  ) {
+  async logout(response: Response) {
     try {
       response.clearCookie('accessToken');
     } catch (e) {

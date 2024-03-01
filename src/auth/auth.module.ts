@@ -8,9 +8,13 @@ import { AuthService } from './auth.service';
 import { JwtGuard } from './guards/jwt.guard';
 
 @Module({
-  imports: [JwtModule.register({}), UserModule, TypeOrmModule.forFeature([User])],
+  imports: [
+    JwtModule.register({}),
+    UserModule,
+    TypeOrmModule.forFeature([User]),
+  ],
   controllers: [AuthController],
   providers: [AuthService, JwtGuard],
-  exports: [JwtGuard]
+  exports: [JwtGuard],
 })
 export class AuthModule {}

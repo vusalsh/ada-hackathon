@@ -4,7 +4,7 @@ import {
   Entity,
   OneToOne,
   PrimaryGeneratedColumn,
-  UpdateDateColumn
+  UpdateDateColumn,
 } from 'typeorm';
 import { Report } from '../../report/entities/report.entity';
 
@@ -34,6 +34,6 @@ export class User {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToOne(() => Report, (report) => report.user, {eager: true})
+  @OneToOne(() => Report, (report) => report.user, { eager: true })
   report: Report;
 }

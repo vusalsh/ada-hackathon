@@ -29,10 +29,7 @@ export class UserService {
     return await this.userRepository.save(user);
   }
 
-  async update(
-    id: string,
-    updateUserDto: UpdateUserDto,
-  ) {
+  async update(id: string, updateUserDto: UpdateUserDto) {
     const user: User = await this.findById(id);
     Object.assign(user, updateUserDto);
     if (updateUserDto.oldPassword) {

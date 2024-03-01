@@ -1,27 +1,27 @@
-import { Expose } from "class-transformer";
+import { Expose } from 'class-transformer';
 
-export class ReportResponseDto{
-    @Expose()
-    id: string;
+export class ReportResponseDto {
+  @Expose()
+  id: string;
 
-    @Expose()
-    gender: string;
+  @Expose()
+  gender: string;
 
-    @Expose()
-    ghd_rate: number;
+  @Expose()
+  ghd_rate: number;
 
-    @Expose()
-    depression_level: number;
+  @Expose()
+  depression_level: number;
 
-    @Expose()
-    cancer_rate: number;
+  @Expose()
+  cancer_rate: number;
 
-    @Expose()
-    smoke: number;
+  @Expose()
+  smoke: number;
 
-    @Expose()
-    disease_rate: number;
+  @Expose()
+  disease_rate: number;
 
-    @Expose()
-    file_path: string;
+  @Expose()
+  file_path: string;
 }
