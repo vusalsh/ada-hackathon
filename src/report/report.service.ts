@@ -1,43 +1,51 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
-import { Response } from 'express';
+import { Injectable, StreamableFile } from '@nestjs/common';
+import axios from 'axios';
 import * as ffmpeg from 'ffmpeg';
 import * as fs from 'fs';
-import { join } from 'path';
 import { dir } from 'tmp-promise';
 import { UpdateReportDto } from './dto/update-report.dto';
 
 @Injectable()
 export class ReportService {
-  async create(res: Response, file: Express.Multer.File) {
+  async create(file: Express.Multer.File) {
     const tempDir = await dir({
       unsafeCleanup: true
     });
-    try{
-  
       await fs.promises.writeFile(
         `${tempDir.path}/${file.originalname}`, file.buffer
       )
 
       const proc = new ffmpeg(`${tempDir.path}/${file.originalname}`);
-      proc.then((video) =>{
+      return proc.then(async(video) =>{
         video.fnExtractFrameToJPG(`storage`, {
           number: 1,
           keep_pixel_aspect_ratio : true,
           keep_aspect_ratio: true,
         })
-        const path = `storage/big_buck_bunny_720p_5mb_1.jpg`;
-        if(fs.existsSync(path)){
-          const file = fs.createReadStream(join(process.cwd(), path));
-          console.log(file);
-        }
-        else{
-          throw new BadRequestException("No file.");
+
+        const dotIndex = file.originalname.lastIndexOf('.');
+        const fileName =  file.originalname.substring(0, dotIndex);
+
+        const filePath = `storage/${fileName}_1.jpg`;
+
+        if(fs.existsSync(filePath)){
+          const buffer = fs.readFileSync(filePath);
+          const file_blob = new Blob([buffer]);
+
+          const formData = new FormData();
+          formData.append('image', file_blob);
+          const response = await axios.post(`${process.env.MODEL_API_URL}/process_image`, formData);
+          console.log(response.status);
+          return response.data;
         }
       })
-    }
-    catch(e){
-      console.log(e);
-    }
+      
+  }
+
+  async getImage(name: string){
+    const response = await axios.get(`${process.env.MODEL_API_URL}/image/${name}`, {responseType: 'arraybuffer'});
+    const buffer = Buffer.from(response.data, 'binary');
+    return new StreamableFile(buffer);
   }
 
   async findAll() {

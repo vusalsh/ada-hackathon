@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Response, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { FileValidator } from '../commons/utils/file.util';
 import { UpdateReportDto } from './dto/update-report.dto';
@@ -10,9 +10,14 @@ export class ReportController {
 
   @Post()
   @UseInterceptors(FileInterceptor('file'))
-  async create(@Response({ passthrough: true }) res, @UploadedFile(FileValidator)
+  async create(@UploadedFile(FileValidator)
     file: Express.Multer.File) {
-    return await this.reportService.create(res, file);
+    return await this.reportService.create(file);
+  }
+
+  @Get('/image/:name')
+  async getImage(@Param('name') name: string){
+    return await this.reportService.getImage(name);
   }
 
   @Get()
