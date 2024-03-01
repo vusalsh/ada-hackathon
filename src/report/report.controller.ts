@@ -18,7 +18,6 @@ import { ReportService } from './report.service';
 
 @Controller('report')
 @ApiTags('report')
-@Serialize(ReportResponseDto)
 export class ReportController {
   constructor(private readonly reportService: ReportService) {}
 
@@ -37,6 +36,7 @@ export class ReportController {
   })
   @UseInterceptors(FileInterceptor('file'))
   @Auth()
+  @Serialize(ReportResponseDto)
   async create(
     @CurrentUser() user: User,
     @UploadedFile(FileValidator)
