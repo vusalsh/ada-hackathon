@@ -2,9 +2,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from 'typeorm';
+import { Report } from '../../report/entities/report.entity';
 
 @Entity()
 export class User {
@@ -31,4 +33,7 @@ export class User {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @OneToOne(() => Report, (report) => report.user, {eager: true})
+  report: Report;
 }

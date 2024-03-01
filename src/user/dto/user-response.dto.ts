@@ -1,4 +1,7 @@
-import { Expose } from "class-transformer";
+import { Expose, Type } from "class-transformer";
+import { ValidateNested } from "class-validator";
+import { ReportResponseDto } from "../../report/dto/response/report-response.dto";
+import { Report } from "../../report/entities/report.entity";
 
 export class UserResponseDto{
     @Expose()
@@ -21,4 +24,9 @@ export class UserResponseDto{
 
     @Expose()
     updatedAt: Date;
+
+    @Expose()
+    @ValidateNested()
+    @Type(() => ReportResponseDto)
+    report: Report;
 }
