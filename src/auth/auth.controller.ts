@@ -8,9 +8,7 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
-import { Serialize } from '../commons/interceptors/serialize.interceptor';
 import { UpdateUserDto } from '../user/dto/update-user.dto';
-import { UserResponseDto } from '../user/dto/user-response.dto';
 import { User } from '../user/entities/user.entity';
 import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';
@@ -18,6 +16,8 @@ import { Auth } from './decorators/auth.decorator';
 import { CurrentUser } from './decorators/current-user.decorator';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
+import { Serialize } from '../commons/interceptors/serialize.interceptor';
+import { UserResponseDto } from '../user/dto/user-response.dto';
 
 @Controller('auth')
 @ApiTags('auth')
