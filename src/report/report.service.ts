@@ -33,7 +33,7 @@ export class ReportService {
 
       const proc = new ffmpeg(`${tempDir.path}/${file.originalname}`);
       return await proc.then(async (video) => {
-        video.fnExtractFrameToJPG(`storage`, {
+        await video.fnExtractFrameToJPG(`storage`, {
           number: 1,
           keep_pixel_aspect_ratio: true,
           keep_aspect_ratio: true,
@@ -43,7 +43,7 @@ export class ReportService {
         const fileName = file.originalname.substring(0, dotIndex);
 
         const filePath = `storage/${fileName}_1.jpg`;
-
+        console.log(fs.existsSync(filePath));
         if (fs.existsSync(filePath)) {
           const buffer = fs.readFileSync(filePath);
           const file_blob = new Blob([buffer]);

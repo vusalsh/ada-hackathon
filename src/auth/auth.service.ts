@@ -57,7 +57,7 @@ export class AuthService {
         secure: true,
       });
     }
-    return user;
+    return this.userService.findById(user.id);
   }
   async login(response: Response, loginDto: LoginDto) {
     const user: User = await this.userService.findByEmail(loginDto.email);
