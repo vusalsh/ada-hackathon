@@ -12,25 +12,25 @@ export class Report {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({ nullable: true })
   gender: string;
 
-  @Column()
+  @Column({ nullable: true })
   ghd_rate: number;
 
-  @Column()
+  @Column({ nullable: true })
   depression_level: number;
 
-  @Column()
+  @Column({ nullable: true })
   cancer_rate: number;
 
-  @Column()
+  @Column({ nullable: true })
   smoke: number;
 
-  @Column()
+  @Column({ nullable: true })
   disease_rate: number;
 
-  @Column()
+  @Column({ nullable: true })
   file_path: string;
 
   @OneToOne(() => User, (user) => user.report)

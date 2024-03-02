@@ -54,6 +54,7 @@ export class ReportService {
           formData,
         );
         if (response.status === 200) {
+          console.log(response);
           const reportData: IReport = response.data;
           const report: Report = this.reportRepository.create(reportData);
           report.user = user;
