@@ -58,6 +58,8 @@ export class ReportService {
           const report: Report = this.reportRepository.create(reportData);
           report.user = user;
           return await this.reportRepository.save(report);
+        } else {
+          console.log(response);
         }
       }
     });
